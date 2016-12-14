@@ -1,6 +1,11 @@
 version: '2.1'
 
 services:
+  storm-base:
+    build:
+      context: ./storm
+    image: storm-base
+    command: /bin/true
   zookeeper:
     image: wurstmeister/zookeeper
     expose: 

@@ -1,4 +1,4 @@
-FROM wurstmeister/storm:latest
+FROM storm-base
 MAINTAINER Wurstmeister
 
 EXPOSE 6700
