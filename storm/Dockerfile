@@ -4,11 +4,12 @@ MAINTAINER Wurstmeister
 
 # allow user specified Storm VERSION, but default to 0.10.2 if not specified
 ARG STORM_VERSION
-ENV STORM_VERSION=${STORM_VERSION:-0.10.2}
+ENV STORM_VERSION=${STORM_VERSION:-1.0.2}
 ENV STORM_HOME /opt/apache-storm-${STORM_VERSION}
 
+
 # download and expand the requested storm bundle into /opt
-RUN wget -q -O - http://mirrors.sonic.net/apache/storm/apache-storm-${STORM_VERSION}/apache-storm-${STORM_VERSION}.tar.gz | tar -xzf - -C /opt
+RUN wget --progress=dot:mega -O - http://mirrors.sonic.net/apache/storm/apache-storm-${STORM_VERSION}/apache-storm-${STORM_VERSION}.tar.gz | tar -xzf - -C /opt
 
 # create the storm user/home/group
 RUN groupadd storm; useradd --gid storm --home-dir /home/storm --create-home --shell /bin/bash storm; chown -R storm:storm $STORM_HOME; mkdir /var/log/storm ; chown -R storm:storm /var/log/storm
@@ -34,6 +35,10 @@ ADD supervisord.conf /etc/supervisor/conf.d/
 ADD sshd.conf /etc/supervisor/templates/
 # by copying the sshd.conf to the supervisor/conf.d/
 #RUN cp /etc/supervisor/sshd.conf /etc/supervisor/conf.d/
+
+
+# mount/create a volume for logging
+VOLUME /var/log/storm
 
 # launch supervisord when this container starts
 ENTRYPOINT ["supervisord","-c"]
