@@ -1,10 +1,11 @@
 FROM storm-base
 MAINTAINER Wurstmeister
 
-RUN /usr/bin/config-supervisord.sh nimbus 
-RUN /usr/bin/config-supervisord.sh drpc
+RUN /usr/bin/template.sh /etc/supervisor/template/storm.conf.templ /etc/supervisor/conf.d/storm-nimbus.conf nimbus 
+RUN /usr/bin/template.sh /etc/supervisor/template/storm.conf.templ /etc/supervisor/conf.d/storm-drpc.conf drpc
 
 EXPOSE 6627
 EXPOSE 3772
 EXPOSE 3773
-CMD /usr/bin/start-supervisor.sh
+
+# uses the base-image ENTRYPOINT to launch supervisord
