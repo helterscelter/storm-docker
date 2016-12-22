@@ -2,7 +2,7 @@ FROM wurstmeister/base
 
 MAINTAINER Wurstmeister 
 
-# allow user specified Storm VERSION, but default to 1.0.1 if not specified
+# allow user specified Storm VERSION, but default to 1.0.2 if not specified
 ARG STORM_VERSION
 ENV STORM_VERSION=${STORM_VERSION:-1.0.2}
 ENV STORM_NAME=apache-storm-${STORM_VERSION}
@@ -10,10 +10,9 @@ ENV STORM_FILENAME=${STORM_NAME}.tar.gz
 ENV STORM_HOME /opt/apache-storm-${STORM_VERSION}
 
 
-
 # download and expand the requested storm bundle into /opt
 # mirror is selected dynamically by parsing the apache suggested mirror page
-RUN wget --continue --timeout=10  --progress=dot:mega -O ${STORM_FILENAME} $( wget -q http://www.apache.org/dyn/closer.lua/storm/${STORM_NAME}/${STORM_FILENAME} -O - | perl -ne 'while ($_ =~ /<strong>(.+?)<.strong>/g){ print "$1\n" }'  | head -1) && \
+RUN wget --continue --timeout=10  --progress=dot:mega -O ${STORM_FILENAME} $( wget -q -O -  https://www.apache.org/dyn/closer.cgi\?as_json\=1 | jq -r '.preferred|rtrimstr("/")')/storm/${STORM_NAME}/${STORM_FILENAME} && \
     tar -xzf ${STORM_FILENAME} -C /opt && \
     rm ${STORM_FILENAME}
 #RUN wget --progress=dot:mega -O - ${STORM_MIRROR}/storm/apache-storm-${STORM_VERSION}/apache-storm-${STORM_VERSION}.tar.gz | tar -xzf - -C /opt
