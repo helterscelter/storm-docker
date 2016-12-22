@@ -31,7 +31,9 @@ ADD cluster.xml $STORM_HOME/logback/cluster.xml
 ADD supervisord.conf /etc/supervisor/conf.d/
 
 # if we want to run SSHD, we should do so under supervisord
-#ADD sshd.conf /etc/supervisor/conf.d/
+ADD sshd.conf /etc/supervisor/templates/
+# by copying the sshd.conf to the supervisor/conf.d/
+#RUN cp /etc/supervisor/sshd.conf /etc/supervisor/conf.d/
 
 # launch supervisord when this container starts
 ENTRYPOINT ["supervisord","-c"]
