@@ -5,7 +5,7 @@ services:
     build:
       context: ./storm
     image: storm-base
-    entrypoint: /bin/true
+    command: /bin/true
   zookeeper:
     image: wurstmeister/zookeeper
     expose: 
