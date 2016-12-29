@@ -1,46 +1,36 @@
 version: '2.1'
 
 services:
-  storm-base:
-    build:
-      context: ./storm
-    image: storm-base
-    command: /bin/true
   zookeeper:
     image: wurstmeister/zookeeper
     expose: 
       - "2181"
-      - "22"
   nimbus:
-    build:
-      context: ./storm-nimbus
+    image: helterscelter/storm-nimbus
     expose:
       - "3773"
       - "3772"
       - "6627"
-      - "22"
     links: 
       - zookeeper:zk
     depends_on:
       - zookeeper
   supervisor:
-    build:
-      context: ./storm-supervisor
+    image: helterscelter/storm-supervisor
     expose:
       - "8000"
-      - "22"
     links: 
       - nimbus:nimbus
       - zookeeper:zk
     depends_on:
       - zookeeper
   ui:
-    build:
-      context: ./storm-ui
+    image: helterscelter/storm-ui
     ports:
       - "49080:8080"
-    expose:
-      - "22"
     links: 
       - nimbus:nimbus
       - zookeeper:zk
+    depends_on:
+      - zookeeper
+      - nimbus

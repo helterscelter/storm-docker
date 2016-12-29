@@ -1,0 +1,5 @@
+[program:storm-$1]
+command=${STORM_HOME}/bin/storm $1
+directory=${STORM_HOME}
+autorestart=true
+user=storm
