@@ -1,30 +1,36 @@
-zookeeper:
-  image: wurstmeister/zookeeper
-  ports: 
-    - "49181:2181"
-    - "22"
-nimbus:
-  image: wurstmeister/storm-nimbus
-  ports:
-    - "49773:3773"
-    - "49772:3772"
-    - "49627:6627"
-    - "22"
-  links: 
-    - zookeeper:zk
-supervisor:
-  image: wurstmeister/storm-supervisor
-  ports:
-    - "8000"
-    - "22"
-  links: 
-    - nimbus:nimbus
-    - zookeeper:zk
-ui:
-  image: wurstmeister/storm-ui
-  ports:
-    - "49080:8080"
-    - "22"
-  links: 
-    - nimbus:nimbus
-    - zookeeper:zk
+version: '2.1'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    expose: 
+      - "2181"
+  nimbus:
+    image: helterscelter/storm-nimbus
+    expose:
+      - "3773"
+      - "3772"
+      - "6627"
+    links: 
+      - zookeeper:zk
+    depends_on:
+      - zookeeper
+  supervisor:
+    image: helterscelter/storm-supervisor
+    expose:
+      - "8000"
+    links: 
+      - nimbus:nimbus
+      - zookeeper:zk
+    depends_on:
+      - zookeeper
+  ui:
+    image: helterscelter/storm-ui
+    ports:
+      - "49080:8080"
+    links: 
+      - nimbus:nimbus
+      - zookeeper:zk
+    depends_on:
+      - zookeeper
+      - nimbus

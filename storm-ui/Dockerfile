@@ -1,11 +1,7 @@
-FROM wurstmeister/storm:0.9.4
-MAINTAINER Wurstmeister
-RUN /usr/bin/config-supervisord.sh ui
+FROM helterscelter/storm-base
+MAINTAINER Helter Scelter
+ 
+RUN /usr/bin/template.sh /etc/supervisor/templates/storm.conf.templ /etc/supervisor/conf.d/storm-ui.conf ui
 
 EXPOSE 8080
-CMD /usr/bin/start-supervisor.sh
-
-
-
-
 

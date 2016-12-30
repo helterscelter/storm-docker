@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker build -t="wurstmeister/storm" storm
-docker build -t="wurstmeister/storm-nimbus" storm-nimbus
-docker build -t="wurstmeister/storm-supervisor" storm-supervisor
-docker build -t="wurstmeister/storm-ui" storm-ui
+docker build -t="helterscelter/storm-base" --force-rm=true $*  storm-base
+docker build -t="helterscelter/storm-nimbus" --force-rm=true $* storm-nimbus
+docker build -t="helterscelter/storm-supervisor" --force-rm=true $* storm-supervisor
+docker build -t="helterscelter/storm-ui" --force-rm=true $* storm-ui

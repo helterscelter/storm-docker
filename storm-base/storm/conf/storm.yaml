@@ -1,7 +1,9 @@
 storm.zookeeper.servers:
-    - "%zookeeper%"
-nimbus.host: "%nimbus%"
+  - "zk"
+nimbus.seeds: 
+  - "nimbus"
 drpc.servers:
-  - "%nimbus%"
+  - "nimbus"
 drpc.port: 3772
 drpc.invocations.port: 3773
+storm.local.dir: "/storm"
